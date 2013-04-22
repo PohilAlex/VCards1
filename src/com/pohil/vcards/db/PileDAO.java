@@ -31,8 +31,14 @@ public class PileDAO extends BaseDAO{
         return pile;
     }
 
+    public Cursor get(int id) {
+        String sql = "SELECT card._id, card.word, card.translation, pile.name FROM " +
+                "pile LEFT OUTER JOIN card ON pile._id=card.pile_id " +
+                "WHERE pile._id="+id;
+        return db.rawQuery(sql, null);
+    }
+
     public Cursor getList() {
-        //db.query(getTableName(), new String[]{"_id", "name", "description"}, null, null, null, null, null);
         String sql = "select * from pile";
         return db.rawQuery(sql, null);
     }

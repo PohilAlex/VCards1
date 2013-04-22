@@ -1,14 +1,14 @@
-package com.pohil.vcards;
+package ui.activity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.SimpleCursorAdapter;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.MenuItem;
+import com.pohil.vcards.R;
 import com.pohil.vcards.db.DbOpenHelper;
 import com.pohil.vcards.db.PileDAO;
 
@@ -26,8 +26,8 @@ public class MainActivity extends SherlockListActivity implements AdapterView.On
         //pileDoa.creare("name1", "description1");
 
         String[] from = {"name"};
-        int[] to = {R.id.card_name};
-        ListAdapter adapter = new SimpleCursorAdapter(this, R.layout.card_list_item, pileDoa.getList(), from, to);
+        int[] to = {R.id.pile_name};
+        ListAdapter adapter = new SimpleCursorAdapter(this, R.layout.pile_list_item, pileDoa.getList(), from, to);
         setListAdapter(adapter);
         getListView().setOnItemLongClickListener(this);
     }
@@ -47,11 +47,20 @@ public class MainActivity extends SherlockListActivity implements AdapterView.On
         return true;
     }
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Intent intent = new Intent(MainActivity.this, EditCardActivity.class);
+        intent.putExtra(EditCardActivity.PILE_ID_KEY, id);
+        startActivity(intent);
+        //Toast.makeText(this, id + "", Toast.LENGTH_SHORT).show();
+    }
+
     class CardActionMode implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, com.actionbarsherlock.view.Menu menu) {
-            getSupportMenuInflater().inflate(R.menu.card, menu);
+            getSupportMenuInflater().inflate(R.menu.pile_edit, menu);
             return true;
         }
 
